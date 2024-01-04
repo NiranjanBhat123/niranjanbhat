@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+</head>
+
+<body>
+    
+
+    <form action="" method="POST" onsubmit="return checkPassword(this)">
+        {% csrf_token %}
+
+        <div class="screen-1">
+            <h2 style="text-align: center;margin-bottom:2rem;">Signup to Library !</h2>
+
+            <div class="split-form">
+                <div class="email">
+                    <label for="username" style="font-size:.9rem;">first name</label>
+                    <div class="sec-2">
+                        <input type="text" name="firstname" style="font-size:.8rem;" />
+                    </div>
+                </div>
+                <div class="email">
+                    <label for="username" style="font-size:.9rem;">last name</label>
+                    <div class="sec-2">
+                        <input type="text" name="lastname" style="font-size:.8rem;" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="split-form">
+
+                <div class="email" style="margin-top:.1rem">
+                    <label for="email" style="font-size:.9rem;">Email</label>
+                    <div class="sec-2">
+                        <input type="email" name="email" style="font-size:.8rem;" />
+                    </div>
+                </div>
+
+                <div class="email" style="margin-top:.1rem">
+                    <label for="email" style="font-size:.9rem;">USN</label>
+                    <div class="sec-2">
+                        <input type="text" name="usn" style="font-size:.8rem;" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="split-form">
+                <div class="email" style="margin-top:.1rem">
+                    <label for="email" style="font-size:.9rem;">password</label>
+                    <div class="sec-2">
+                        <input type="password" name="password" style="font-size:.8rem;" />
+                    </div>
+                </div>
+
+                <div class="email" style="margin-top:.1rem">
+                    <label for="email" style="font-size:.9rem;">confirm password</label>
+                    <div class="sec-2">
+                        <input type="password" name="cnfpassword" style="font-size:.8rem;" />
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="login">Signup</button>
+            <div class="footer" style="text-align: center;"><span>Already have an account? <a href="{% url 'login' %}"
+                        style="color: white;">Login</a></span></div>
+        </div>
+    </form>
+
+</body>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Montserrat:wght@200;300;400;500;600;700&family=Quicksand:wght@300;400;500;600;700&family=Yatra+One&display=swap');
+
+
+    * {
+        font-family: "Montserrat";
+    }
+
+    body {
+        margin-top: 2.5rem;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        overflow-y: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #100c08;
+        color: white;
+
+    }
+
+    .split-form {
+        display: flex;
+        justify-content: space-between;
+        gap: 1em;
+    }
+
+    .screen-1 {
+        background: #282C35;
+        padding: 2em;
+        display: flex;
+        flex-direction: column;
+        border-radius: 30px;
+
+        gap: 2em;
+    }
+
+    .screen-1 .email {
+        background: white;
+
+        padding: 1em;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5em;
+        border-radius: 20px;
+        color: #4d4d4d;
+        margin-top: -3em;
+    }
+
+    .screen-1 .email input {
+        outline: none;
+        border: none;
+    }
+
+    .screen-1 .email input::-moz-placeholder {
+        color: black;
+        font-size: 0.7em;
+    }
+
+    .screen-1 .email input:-ms-input-placeholder {
+        color: black;
+        font-size: 0.7em;
+    }
+
+    .screen-1 .email input::placeholder {
+        color: black;
+        font-size: 0.7em;
+    }
+
+    .screen-1 .email ion-icon {
+        color: #4d4d4d;
+        margin-bottom: -0.1em;
+    }
+
+    .screen-1 .password {
+        background: white;
+
+        padding: 1em;
+        display: flex;
+        flex-direction: column;
+
+        border-radius: 20px;
+        color: #4d4d4d;
+    }
+
+    .screen-1 .password input {
+        outline: none;
+        border: none;
+    }
+
+    .screen-1 .password input::-moz-placeholder {
+        color: black;
+
+    }
+
+    .screen-1 .password input:-ms-input-placeholder {
+        color: black;
+
+    }
+
+    .screen-1 .password input::placeholder {
+        color: black;
+
+    }
+
+    .screen-1 .password ion-icon {
+        color: #4d4d4d;
+        margin-bottom: -0.1em;
+    }
+
+    .screen-1 .password .show-hide {
+        margin-right: -5em;
+    }
+
+    .screen-1 .login {
+        padding: 1em;
+        background: #3e4684;
+        color: white;
+        border: none;
+        border-radius: 30px;
+        font-weight: 600;
+    }
+
+    .screen-1 .footer {
+        width: 20rem;
+
+        font-size: .8rem;
+        color: #5e5e5e;
+        gap: 14em;
+
+    }
+
+    .screen-1 .footer span {
+        cursor: pointer;
+    }
+
+    button {
+        cursor: pointer;
+    }
+</style>
+
+<script>
+
+    // Function to check Whether both passwords 
+    // is same or not. 
+    function checkPassword(form) {
+        password1 = form.password.value;
+        password2 = form.cnfpassword.value;
+
+
+
+        // If Not same return False.     
+        if (password1 != password2) {
+            alert("\nPasswords did not match - Please try again..")
+            return false;
+        }
+    } 
+</script>
+
+</html>
