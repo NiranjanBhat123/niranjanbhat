@@ -34,3 +34,14 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
+
+
+class Admin(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    admin_id = models.CharField(max_length=10, unique=True)
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    email = models.EmailField()
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} - {self.admin_id}"
