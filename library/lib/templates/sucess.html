@@ -1,25 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Borrowed Successfully</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Montserrat:wght@200;300;400;500;600;700&family=Quicksand:wght@300;400;500;600;700&family=Yatra+One&display=swap');
+
+
         * {
+            font-family: "Montserrat";
+        }
+        * {
+           
             padding: 0;
             margin: 0;
             box-sizing: border-box;
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #eee;
+            
+            background-color: #1a1a1a; /* Updated background color to a dark theme */
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
             margin: 0;
+            color: #fff; /* Updated text color to white */
         }
 
         .animated-check {
@@ -70,6 +79,7 @@
         }
     </style>
 </head>
+
 <body>
     <h1>
         <svg class="animated-check" viewBox="0 0 24 24">
@@ -77,7 +87,8 @@
         </svg>
         Book Borrowed Successfully!
     </h1>
-    <p>Thank you for using our library services.</p>
+    <p style="margin-right: -4rem;">Thank you for using our library services.</p>
     <a href="/">Back to Home</a>
 </body>
+
 </html>
