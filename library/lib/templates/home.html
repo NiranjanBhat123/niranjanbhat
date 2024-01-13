@@ -2,6 +2,41 @@
 {% block content %}
 
 <style>
+    .genre-carousel {
+        margin-bottom: 3rem;
+    }
+
+    .genre-carousel .carousel-inner {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 3rem;
+    }
+
+    .genre-title {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+    .carousel-control-prev,
+    .carousel-control-next {
+        cursor: pointer;
+        background-color: #808080; /* Grey background for controls */
+        border-radius: 50%; /* Rounded shape for controls */
+        width: 40px; /* Adjust the width as needed */
+        height: 40px; /* Adjust the height as needed */
+        opacity: 0.8; /* Adjust the opacity as needed */
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        cursor: pointer;
+        background-color: black; /* White color for the arrow icon */
+        border-radius: 50%; /* Rounded shape for the arrow icon */
+        padding: 10px; /* Adjust the padding as needed */
+    }
+    .genre-books-grid .book-card {
+        flex: 0 0 calc(32% - 20px); /* Adjust the width as needed, considering the gap */
+    }
+    
     body {
         font-family: 'Arial', sans-serif;
         background-color: #1a1a1a;
@@ -122,59 +157,58 @@
         border-radius: 4px;
         z-index: 1; /* Ensures the tooltip is above other elements */
     }
+    .genre-books-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 3rem;
+        justify-content: flex-start;
+    }
+
+    .genre-title {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+    .genre-books-grid .book-card {
+        flex: 0 0 calc(32% - 20px); /* Adjust the width as needed, considering the gap */
+    }
+
+
 </style>
 
-<!-- Rest of your HTML code remains unchanged -->
-
-
-<div class="search-bar">
-    <label for="search-input">Search Books:</label>
-    <input type="text" id="search-input" placeholder="Enter book name, ID, genre, or author">
-</div>
-
-<div class="genre-filter">
-    <label for="genre-select">Filter by Genre:</label>
-    <select id="genre-select">
-        <option value="">All Genres</option>
-        <!-- Add options for each genre -->
-        {% for genre in all_genres %}
-            <option value="{{ genre.id }}">{{ genre.name }}</option>
-        {% endfor %}
-    </select>
-</div>
-
-<div class="recently-added">
-    <h2>Recently Added</h2>
-    <div class="recent-books-grid">
-        {% for book in recently_added_books %}
-            {%if not book.is_available %}
-            <div>
-                <p>book not available</p>
-            </div>
-            {%endif %}
-            <div class="book-card recent-book {% if not book.is_available %}not-available{% endif %}" data-genre="{{ book.genre.id }}">
-                <h3>{{ book.title }}</h3>
-                <p class="genre">{{ book.genre.name }}</p>
-                <p class="isbn">ISBN: {{ book.isbn_number }}</p>
-                <p>Author: {{ book.author }}</p>
-            </div>
-        {% endfor %}
+<div class="genre-carousel">
+    <h1 style="margin-top: 3rem; font-family: Montserrat;">Genres</h1>
+    <div id="genreCarousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            {% for genre in all_genres %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    <div class="genre-title" style="text-align: center;">
+                        <h2>{{ genre.name }}</h2>
+                    </div>
+                    <div class="genre-books-grid">
+                        {% for book in all_books %}
+                            {% if book.genre.id == genre.id %}
+                                <div class="book-card {% if not book.is_available %}not-available{% endif %}" data-genre="{{ book.genre.id }}">
+                                    <h3>{{ book.title }}</h3>
+                                    <p class="genre">{{ book.genre.name }}</p>
+                                    <p class="isbn">{{ book.isbn_number }}</p>
+                                    <p>Author: {{ book.author }}</p>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <a class="carousel-control-prev" href="#genreCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#genreCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
     </div>
 </div>
-
-<h1 style="margin-top: 3rem;font-family:Montserrat">All Books</h1>
-<div class="all-books">
-    {% for book in all_books %}
-        <div class="book-card {% if not book.is_available %}not-available{% endif %}" data-genre="{{ book.genre.id }}">
-            <h3>{{ book.title }}</h3>
-            <p class="genre">{{ book.genre.name }}</p>
-            <p class="isbn">ISBN: {{ book.isbn_number }}</p>
-            <p>Author: {{ book.author }}</p>
-        </div>
-    {% endfor %}
-</div>
-
-
 <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script>
     document.getElementById('genre-select').addEventListener('change', function() {
@@ -205,5 +239,9 @@
         });
     }
 </script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyPhG+5uqJ8kFOEl47Z1GR0abWi8Q1A1rE" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js" integrity="sha384-Q6dA2POdgoy5Jkkzle6UmbX4RFtixRUFE0jOEn5Z8xjzZN6h8FyoAa6DbicFm4pn" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+WyPhG+5uqJ8kFOEl47Z1GR0abWi8Q1A1rE" crossorigin="anonymous"></script>
 
 {% endblock content %}
