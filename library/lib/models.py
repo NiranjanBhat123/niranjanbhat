@@ -30,6 +30,7 @@ class Book(models.Model):
     book_id = models.IntegerField(unique=True)
     isbn_number = models.CharField(max_length=13, unique=True)
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
+    is_available = models.BooleanField(default=True)
 
     def __str__(self):
         return self.title

@@ -6,7 +6,10 @@ from django.db import IntegrityError
 from .models import *
 from django . shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
-
+from django.http import JsonResponse
+from django.shortcuts import  get_object_or_404
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 
 def loginn(request):
     if request.user.is_authenticated:
@@ -78,15 +81,15 @@ def signup(request):
 @login_required(login_url='login/')
 def home(request):
     recently_added_books = Book.objects.order_by('-id')[:4]
-
-    # Retrieve all books
     all_books = Book.objects.all()
+    book_list = list(all_books)
     all_genres = Genre.objects.all()
 
     context = {
         'recently_added_books': recently_added_books,
         'all_books': all_books,
         'all_genres':all_genres,
+        'book_list':book_list,
     }
 
     return render(request, 'home.html', context)
@@ -97,3 +100,98 @@ def logoutt(request):
     print("logging out ", request.user)
     logout(request)
     return redirect('/')
+
+
+@login_required(login_url="login/")
+def borrow(request):
+    if request.method == 'POST':
+        isbn = request.POST.get('isbn')
+
+       
+        print(request.user.email)
+        student = Student.objects.get(email=request.user.email)
+
+        # Check if the student already has 2 books
+        if student.book1 and student.book2:
+            messages.error(request, 'You can only borrow a maximum of 2 books.')
+            return redirect('borrow')
+
+        try:
+            # Try to find the book by ISBN number
+            book = Book.objects.get(isbn_number=isbn, is_available=True)
+        except Book.DoesNotExist:
+            messages.error(request, 'Book not found or already borrowed.')
+            return redirect('borrow')
+
+        # Update student's book1 or book2 and mark the book as unavailable
+        if not student.book1:
+            student.book1 = book
+        elif not student.book2:
+            student.book2 = book
+
+        book.is_available = False
+
+        student.save()
+        book.save()
+
+        messages.success(request, f'Book "{book.title}" borrowed successfully!')
+        return redirect('sucess')
+
+    return render(request, 'borrow.html')
+
+
+
+@login_required(login_url='login/')
+def sucess(req):
+    return render(req,'sucess.html')
+
+
+
+@login_required(login_url='login/')
+def return_book(request):
+    if request.method == 'POST':
+        isbn_num = request.POST.get('isbn')
+        print(isbn_num)
+        print(Book.objects.get(isbn_number='ISBNMAG111'))
+        try:
+            book = Book.objects.get(isbn_number=isbn_num)
+            print(book)
+            student = Student.objects.get(email=request.user.email)
+
+            # Check if the book is assigned to the student
+            if student.book1 == book or student.book2 == book:
+                # Update the book availability and remove from student's book list
+                book.is_available = True
+                book.save()
+
+                if student.book1 == book:
+                    student.book1 = None
+                elif student.book2 == book:
+                    student.book2 = None
+
+                student.save()
+
+                messages.success(request, f'Book with ISBN {isbn_num} returned successfully.')
+            else:
+                messages.error(request, 'You have not borrowed this book.')
+        except Book.DoesNotExist:
+            messages.error(request, 'Book with the provided ISBN does not exist.')
+
+    return render(request, 'return_book.html')
+
+
+
+
+@login_required(login_url='login/')
+def profile(request):
+    user_profile = Student.objects.get(email=request.user.email)
+
+    context = {'user_profile': user_profile}
+
+    if user_profile.book1:
+        context['book1'] = Book.objects.get(book_id=user_profile.book1.book_id)
+
+    if user_profile.book2:
+        context['book2'] = Book.objects.get(book_id=user_profile.book2.book_id)
+
+    return render(request, 'profile.html', context)

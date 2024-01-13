@@ -2,8 +2,9 @@
 {% block content %}
 
 <style>
+
     body {
-        font-family: 'Arial', sans-serif;
+       
         background-color: #1a1a1a;
         color: #fff;
         padding: 20px;
@@ -109,13 +110,14 @@
     </div>
 </div>
 
-<h2 style="margin-top: 3rem;">All Books</h2>
+<h1 style="margin-top: 3rem;">All Books</h1>
 <div class="all-books" style="margin-top: 1rem;">
     {% for book in all_books %}
         <div class="book-card" data-genre="{{ book.genre.id }}">
             <h3>{{ book.title }}</h3>
             <p>Genre: {{ book.genre.name }}</p>
             <p>ISBN: {{ book.isbn_number }}</p>
+            <p>author : {{book.author}}</p>
         </div>
     {% endfor %}
 </div>
