@@ -7,9 +7,10 @@ from .models import *
 from django . shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.shortcuts import  get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+
 
 def loginn(request):
     if request.user.is_authenticated:
@@ -88,8 +89,8 @@ def home(request):
     context = {
         'recently_added_books': recently_added_books,
         'all_books': all_books,
-        'all_genres':all_genres,
-        'book_list':book_list,
+        'all_genres': all_genres,
+        'book_list': book_list,
     }
 
     return render(request, 'home.html', context)
@@ -108,12 +109,12 @@ def borrow(request):
         isbn = request.POST.get('isbn')
 
        
-        print(request.user.email)
         student = Student.objects.get(email=request.user.email)
 
         # Check if the student already has 2 books
         if student.book1 and student.book2:
-            messages.error(request, 'You can only borrow a maximum of 2 books.')
+            messages.error(
+                request, 'You can only borrow a maximum of 2 books.')
             return redirect('borrow')
 
         try:
@@ -134,28 +135,27 @@ def borrow(request):
         student.save()
         book.save()
 
-        messages.success(request, f'Book "{book.title}" borrowed successfully!')
+        messages.success(
+            request, f'Book "{book.title}" borrowed successfully!')
         return redirect('sucess')
 
     return render(request, 'borrow.html')
 
 
-
 @login_required(login_url='login/')
 def sucess(req):
-    return render(req,'sucess.html')
-
+    return render(req, 'sucess.html')
 
 
 @login_required(login_url='login/')
 def return_book(request):
     if request.method == 'POST':
         isbn_num = request.POST.get('isbn')
-        print(isbn_num)
-        print(Book.objects.get(isbn_number='ISBNMAG111'))
+        
+        
         try:
             book = Book.objects.get(isbn_number=isbn_num)
-            print(book)
+            
             student = Student.objects.get(email=request.user.email)
 
             # Check if the book is assigned to the student
@@ -171,15 +171,15 @@ def return_book(request):
 
                 student.save()
 
-                messages.success(request, f'Book with ISBN {isbn_num} returned successfully.')
+                messages.success(
+                    request, f'Book with ISBN {isbn_num} returned successfully.')
             else:
                 messages.error(request, 'You have not borrowed this book.')
         except Book.DoesNotExist:
-            messages.error(request, 'Book with the provided ISBN does not exist.')
+            messages.error(
+                request, 'Book with the provided ISBN does not exist.')
 
     return render(request, 'return_book.html')
-
-
 
 
 @login_required(login_url='login/')

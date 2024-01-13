@@ -1,3 +1,4 @@
+{% load static %}
 {% include 'base.html' %}
 {% block content %}
 
@@ -15,7 +16,53 @@
         color: #3498db;
     }
 
+    .profile-card {
+        
+        background-color: whitesmoke;  /* Different color for profile card */
+        color: #000;  /* Text color for better contrast */
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        transition: background-color 0.3s;
+        display: flex;
+        align-items: center;
+    }
+
+    .profile-card img {
+        max-width: 100px;  /* Adjust the max-width as needed */
+        border-radius: 50%;
+        margin-right: 20px;
+    }
+
+    .profile-details {
+        flex: 1;
+    }
+
+    .profile-details h2,
+    .profile-details h4,
+    .profile-details p {
+        margin: 0;
+        font-size: 1.5em;
+    }
+
+    .profile-details h2 {
+        color: #3498db;  /* Color for the name */
+    }
+
+    .profile-details h4 {
+        color: #e74c3c;  /* Color for other details like Student ID and Email */
+    }
+
+    .book-container {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
     .book-card {
+        flex: 0 0 48%;
         background-color: #3498db;
         color: #fff;
         border: 1px solid #2980b9;
@@ -36,25 +83,39 @@
         margin: 0;
     }
 </style>
+<h3 style="color:#3498db;">My Profile</h3>
+<div class="profile-card">
+    
+    <img src="{% static 'profile_image.webp' %}" alt="Profile Image">
+    <div class="profile-details">
+        <h2>Name: {{user_profile.first_name}}  {{user_profile.last_name}}</h2>
+        <h4>Student ID: {{user_profile.student_id}}</h4>
+        <h4>Email: {{user_profile.email}}</h4>
+    </div>
+</div>
 
 <h1>My books</h1>
 
-{% if user_profile.book1 %}
-    <div class="book-card">
-        <h2>{{ user_profile.book1.title }}</h2>
-        <p>Author: {{ user_profile.book1.author }}</p>
-        <p>ISBN: {{ user_profile.book1.isbn_number }}</p>
-        <p>Genre: {{ user_profile.book1.genre.name }}</p>
-    </div>
-{% endif %}
+<div class="book-container">
 
-{% if user_profile.book2 %}
-    <div class="book-card">
-        <h2>{{ user_profile.book2.title }}</h2>
-        <p>Author: {{ user_profile.book2.author }}</p>
-        <p>ISBN: {{ user_profile.book2.isbn_number }}</p>
-        <p>Genre: {{ user_profile.book2.genre.name }}</p>
-    </div>
-{% endif %}
+    {% if user_profile.book1 %}
+        <div class="book-card">
+            <h2>{{ user_profile.book1.title }}</h2>
+            <p>Author: {{ user_profile.book1.author }}</p>
+            <p>ISBN: {{ user_profile.book1.isbn_number }}</p>
+            <p>Genre: {{ user_profile.book1.genre.name }}</p>
+        </div>
+    {% endif %}
+
+    {% if user_profile.book2 %}
+        <div class="book-card">
+            <h2>{{ user_profile.book2.title }}</h2>
+            <p>Author: {{ user_profile.book2.author }}</p>
+            <p>ISBN: {{ user_profile.book2.isbn_number }}</p>
+            <p>Genre: {{ user_profile.book2.genre.name }}</p>
+        </div>
+    {% endif %}
+
+</div>
 
 {% endblock content %}
