@@ -2,9 +2,8 @@
 {% block content %}
 
 <style>
-
     body {
-       
+        font-family: 'Arial', sans-serif;
         background-color: #1a1a1a;
         color: #fff;
         padding: 20px;
@@ -17,7 +16,8 @@
         margin-bottom: 20px;
     }
 
-    .search-bar label, .genre-filter label {
+    .search-bar label,
+    .genre-filter label {
         color: #3498db;
         margin-right: 10px;
     }
@@ -44,24 +44,33 @@
         color: #fff;
     }
 
-    .recent-books-grid, .all-books {
+    .recently-added,
+    .all-books {
+        margin-top: 1rem;
+    }
+
+    .recent-books-grid,
+    .all-books {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));  /* Adjusted minmax width for wider cards */
         grid-gap: 20px;
     }
 
     .book-card {
-        background-color: #3498db;
+        height: 10rem;
+        position: relative;
+        background-color: #343434;
         color: #fff;
-        border: 1px solid #2980b9;
         border-radius: 8px;
         padding: 15px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         transition: background-color 0.3s;
+        overflow: hidden;
     }
 
-    .book-card:hover {
-        background-color: #1a1a1a;
+    .book-card:not(.not-available):hover {
+        transform: translateY(-15px); /* Adjust the value as needed for the desired upward movement */
+        transition: transform 0.3s; /* Add a smooth transition effect */
     }
 
     .book-card h3 {
@@ -74,11 +83,49 @@
         margin: 0;
     }
 
-    .recent-book {
+    .book-card .isbn {
+        margin-bottom: .5rem;
+        position: absolute;
+        bottom: 5px;
+        left: 5px;
         background-color: #e74c3c;
-        border: 1px solid #c0392b;
+        color: #fff;
+        padding: 5px;
+        border-radius: 4px;
+    }
+
+    .book-card .genre {
+        margin-bottom: .5rem;
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        background-color: #27ae60;
+        color: #fff;
+        padding: 5px;
+        border-radius: 4px;
+    }
+
+    .book-card.not-available {
+        color: black;
+        background-color: #eee;
+        opacity: 0.7;  /* Added opacity for watermark effect */
+    }
+    .book-card.not-available:hover::before {
+        content: "Book Not Available";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.7);
+        color: #fff;
+        padding: 10px;
+        border-radius: 4px;
+        z-index: 1; /* Ensures the tooltip is above other elements */
     }
 </style>
+
+<!-- Rest of your HTML code remains unchanged -->
+
 
 <div class="search-bar">
     <label for="search-input">Search Books:</label>
@@ -100,27 +147,33 @@
     <h2>Recently Added</h2>
     <div class="recent-books-grid">
         {% for book in recently_added_books %}
-            <div class="book-card recent-book" data-genre="{{ book.genre.id }}">
+            {%if not book.is_available %}
+            <div>
+                <p>book not available</p>
+            </div>
+            {%endif %}
+            <div class="book-card recent-book {% if not book.is_available %}not-available{% endif %}" data-genre="{{ book.genre.id }}">
                 <h3>{{ book.title }}</h3>
-                <p>Genre: {{ book.genre.name }}</p>
-                <p>ISBN: {{ book.isbn_number }}</p>
-                <p>author : {{book.author}}</p>
+                <p class="genre">{{ book.genre.name }}</p>
+                <p class="isbn">ISBN: {{ book.isbn_number }}</p>
+                <p>Author: {{ book.author }}</p>
             </div>
         {% endfor %}
     </div>
 </div>
 
-<h1 style="margin-top: 3rem;">All Books</h1>
-<div class="all-books" style="margin-top: 1rem;">
+<h1 style="margin-top: 3rem;font-family:Montserrat">All Books</h1>
+<div class="all-books">
     {% for book in all_books %}
-        <div class="book-card" data-genre="{{ book.genre.id }}">
+        <div class="book-card {% if not book.is_available %}not-available{% endif %}" data-genre="{{ book.genre.id }}">
             <h3>{{ book.title }}</h3>
-            <p>Genre: {{ book.genre.name }}</p>
-            <p>ISBN: {{ book.isbn_number }}</p>
-            <p>author : {{book.author}}</p>
+            <p class="genre">{{ book.genre.name }}</p>
+            <p class="isbn">ISBN: {{ book.isbn_number }}</p>
+            <p>Author: {{ book.author }}</p>
         </div>
     {% endfor %}
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script>
