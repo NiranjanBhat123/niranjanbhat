@@ -81,7 +81,7 @@ def signup(request):
 
 @login_required(login_url='login/')
 def home(request):
-    recently_added_books = Book.objects.order_by('-id')[:4]
+    recently_added_books = Book.objects.order_by('-id')[:3]
     all_books = Book.objects.all()
     book_list = list(all_books)
     all_genres = Genre.objects.all()
@@ -151,8 +151,7 @@ def sucess(req):
 def return_book(request):
     if request.method == 'POST':
         isbn_num = request.POST.get('isbn')
-        
-        
+        print(f"isbn_num is {isbn_num}")
         try:
             book = Book.objects.get(isbn_number=isbn_num)
             
