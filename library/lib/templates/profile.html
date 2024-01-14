@@ -10,13 +10,14 @@
         padding: 20px;
     }
 
-    
+
 
     .profile-card {
-       
+
         display: flex;
         align-items: center;
-        background-color: #222;  /* Dark background color for dark mode */
+        background-color: #222;
+        /* Dark background color for dark mode */
         color: #fff;
         border-radius: 10px;
         padding: 20px;
@@ -59,6 +60,7 @@
     }
 
     .book-card {
+        cursor: pointer;
         height: 10rem;
         position: relative;
         background-color: #343434;
@@ -113,7 +115,7 @@
 <div class="profile-card">
     <img src="{% static 'profile_image.webp' %}" alt="Profile Image">
     <div class="profile-details">
-        <h2>{{user_profile.first_name}}  {{user_profile.last_name}}</h2>
+        <h2>{{user_profile.first_name}} {{user_profile.last_name}}</h2>
         <h4>Student ID: {{user_profile.student_id}}</h4>
         <h4>Email: {{user_profile.email}}</h4>
     </div>
@@ -124,23 +126,45 @@
 <div class="book-container">
 
     {% if user_profile.book1 %}
-        <div class="book-card">
-            <h2>{{ user_profile.book1.title }}</h2>
-            <p>Author: {{ user_profile.book1.author }}</p>
-            <p class="isbn">ISBN: {{ user_profile.book1.isbn_number }}</p>
-            <p class="genre">Genre: {{ user_profile.book1.genre.name }}</p>
-        </div>
+    <div class="book-card">
+        <h2>{{ user_profile.book1.title }}</h2>
+        <p>Author: {{ user_profile.book1.author }}</p>
+        <p class="isbn">ISBN: {{ user_profile.book1.isbn_number }}</p>
+        <p class="genre">Genre: {{ user_profile.book1.genre.name }}</p>
+    </div>
     {% endif %}
 
     {% if user_profile.book2 %}
-        <div class="book-card">
-            <h2>{{ user_profile.book2.title }}</h2>
-            <p>Author: {{ user_profile.book2.author }}</p>
-            <p class="isbn">ISBN: {{ user_profile.book2.isbn_number }}</p>
-            <p class="genre">Genre: {{ user_profile.book2.genre.name }}</p>
-        </div>
+    <div class="book-card">
+        <h2>{{ user_profile.book2.title }}</h2>
+        <p>Author: {{ user_profile.book2.author }}</p>
+        <p class="isbn">ISBN: {{ user_profile.book2.isbn_number }}</p>
+        <p class="genre">Genre: {{ user_profile.book2.genre.name }}</p>
+    </div>
     {% endif %}
 
 </div>
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var bookCards = document.querySelectorAll('.book-card');
+
+        bookCards.forEach(function (card) {
+            card.addEventListener('click', function () {
+                
+                var genreId = card.getAttribute('data-genre');
+
+                
+                var pdfLink = '{% static "mech.pdf" %}?genre=' + genreId;
+                window.open(pdfLink, '_blank');
+
+
+            });
+        });
+    });
+</script>
+
 
 {% endblock content %}

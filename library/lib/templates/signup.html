@@ -216,16 +216,9 @@
 </style>
 
 <script>
-
-    // Function to check Whether both passwords 
-    // is same or not. 
     function checkPassword(form) {
         password1 = form.password.value;
-        password2 = form.cnfpassword.value;
-
-
-
-        // If Not same return False.     
+        password2 = form.cnfpassword.value;    
         if (password1 != password2) {
             alert("\nPasswords did not match - Please try again..")
             return false;

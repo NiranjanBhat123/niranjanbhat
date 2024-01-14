@@ -22,31 +22,29 @@
     .carousel-control-next {
         cursor: pointer;
         background-color: #808080;
-        /* Grey background for controls */
+        
         border-radius: 50%;
-        /* Rounded shape for controls */
         width: 40px;
-        /* Adjust the width as needed */
         height: 40px;
-        /* Adjust the height as needed */
+        
         opacity: 0.8;
-        /* Adjust the opacity as needed */
+        
     }
 
     .carousel-control-prev-icon,
     .carousel-control-next-icon {
         cursor: pointer;
         background-color: black;
-        /* White color for the arrow icon */
+        
         border-radius: 50%;
-        /* Rounded shape for the arrow icon */
+        
         padding: 10px;
-        /* Adjust the padding as needed */
+        
     }
 
     .genre-books-grid .book-card {
         flex: 0 0 calc(32% - 20px);
-        /* Adjust the width as needed, considering the gap */
+        
     }
 
     body {
@@ -100,7 +98,6 @@
     .all-books {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        /* Adjusted minmax width for wider cards */
         grid-gap: 20px;
     }
 
@@ -160,7 +157,7 @@
         color: black;
         background-color: #eee;
         opacity: 0.7;
-        /* Added opacity for watermark effect */
+        
     }
 
     .book-card.not-available:hover::before {
@@ -174,7 +171,7 @@
         padding: 10px;
         border-radius: 4px;
         z-index: 1;
-        /* Ensures the tooltip is above other elements */
+
     }
 
     .genre-books-grid {
@@ -191,7 +188,7 @@
 
     .genre-books-grid .book-card {
         flex: 0 0 calc(32% - 20px);
-        /* Adjust the width as needed, considering the gap */
+        
     }
 </style>
 
@@ -254,17 +251,24 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var bookCards = document.querySelectorAll('.book-card');
-    
+
         bookCards.forEach(function (card) {
             card.addEventListener('click', function () {
-                // Get the genre ID from the data attribute
+
                 var genreId = card.getAttribute('data-genre');
-    
-                // Create a link to the PDF using the genre ID
-                var pdfLink = '{% static "mech.pdf" %}?genre=' + genreId;
-    
-                // Open the PDF link in a new tab or window
-                window.open(pdfLink, '_blank');
+                if (!card.classList.contains('not-available')) {
+
+                    var pdfLink = '{% static "mech.pdf" %}?genre=' + genreId;
+
+
+                    window.open(pdfLink, '_blank');
+                } else {
+
+                    alert('This book is not available at the moment.');
+
+                }
+
+
             });
         });
     });
