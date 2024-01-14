@@ -22,29 +22,29 @@
     .carousel-control-next {
         cursor: pointer;
         background-color: #808080;
-        
+
         border-radius: 50%;
         width: 40px;
         height: 40px;
-        
+
         opacity: 0.8;
-        
+
     }
 
     .carousel-control-prev-icon,
     .carousel-control-next-icon {
         cursor: pointer;
         background-color: black;
-        
+
         border-radius: 50%;
-        
+
         padding: 10px;
-        
+
     }
 
     .genre-books-grid .book-card {
         flex: 0 0 calc(32% - 20px);
-        
+
     }
 
     body {
@@ -157,7 +157,7 @@
         color: black;
         background-color: #eee;
         opacity: 0.7;
-        
+
     }
 
     .book-card.not-available:hover::before {
@@ -188,9 +188,80 @@
 
     .genre-books-grid .book-card {
         flex: 0 0 calc(32% - 20px);
-        
+
+    }
+
+
+
+
+
+
+
+
+
+
+    .pdf-popover {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(44, 62, 80, 1);
+        /* Increased opacity for background */
+        border: 1px solid #3498db;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        max-width: 80%;
+        max-height: 80%;
+        overflow: auto;
+        z-index: 1000;
+        padding: 20px;
+        border-radius: 8px;
+        color: #fff;
+    }
+
+    .pdf-popover iframe {
+        width: 100%;
+        height: 60vh;
+        border: none;
+        margin-bottom: 10px;
+    }
+
+    .btn-container {
+        text-align: center;
+    }
+
+    .pdf-btn,
+    .copy-btn,
+    .close-btn {
+        background-color: #27ae60;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 1em;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    .copy-btn {
+        background-color: #e74c3c;
+    }
+
+    .close-btn {
+        background-color: #3498db;
+    }
+
+    .book-info {
+        margin-bottom: 10px;
+    }
+
+    .isbn-info {
+        font-weight: bold;
     }
 </style>
+
+
+
 
 
 
@@ -209,6 +280,20 @@
         {% endfor %}
     </div>
 </div>
+
+<div class="pdf-popover" id="pdf-viewer">
+    <div class="book-info" id="book-info"></div>
+    <iframe src="" frameborder="0"></iframe>
+    <div class="btn-container">
+        <button class="copy-btn" onclick="copyISBN()">copy ISBN</button>
+        <button class="close-btn" onclick="closePopover()"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                <path
+                    d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
+            </svg></button>
+    </div>
+</div>
+
 
 
 <div class="genre-carousel">
@@ -248,31 +333,85 @@
 </div>
 
 
+
+
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var bookCards = document.querySelectorAll('.book-card');
+    function loadPDF(pdfUrl) {
+        const pdfViewer = document.getElementById('pdf-viewer');
+        const iframe = pdfViewer.querySelector('iframe');
+        iframe.src = pdfUrl;
+        pdfViewer.style.display = 'block';
 
-        bookCards.forEach(function (card) {
-            card.addEventListener('click', function () {
+        // Display basic book information
+        const bookInfoElement = document.getElementById('book-info');
+        const activeBook = document.querySelector('.recent-book.active');
+        const bookTitle = activeBook.querySelector('h3').textContent.trim();
+        const authorName = activeBook.querySelector('.author').textContent.trim();
+        const isbnText = getCurrentISBN();
 
-                var genreId = card.getAttribute('data-genre');
-                if (!card.classList.contains('not-available')) {
+        bookInfoElement.innerHTML = `<p>${bookTitle} by ${authorName}</p>`;
+        bookInfoElement.innerHTML += `<p class="isbn-info">ISBN: ${isbnText}</p>`;
+    }
 
-                    var pdfLink = '{% static "mech.pdf" %}?genre=' + genreId;
+    function readBook() {
+        
+        const pdfUrl = '{% static "mech.pdf" %}';
+        
+        loadPDF(pdfUrl);
+    }
 
+    function copyISBN() {
+        const isbnText = getCurrentISBN();
 
-                    window.open(pdfLink, '_blank');
+        // Copy ISBN to clipboard
+        navigator.clipboard.writeText(isbnText).then(function () {
+            alert('ISBN copied to clipboard: ' + isbnText);
+        });
+    }
+
+    function getCurrentISBN() {
+        // Retrieve and return the ISBN from the clicked book card
+        const activeBook = document.querySelector('.recent-book.active');
+        const isbnElement = activeBook.querySelector('.isbn');
+        return isbnElement.textContent.trim();
+    }
+
+    function closePopover() {
+        const pdfViewer = document.getElementById('pdf-viewer');
+        pdfViewer.style.display = 'none';
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Example: Load PDF when a book is clicked
+        const bookCards = document.querySelectorAll('.book-card');
+    
+        bookCards.forEach(function (bookCard) {
+            bookCard.addEventListener('click', function () {
+                // Check if the book is available
+                if (!bookCard.classList.contains('not-available')) {
+                    // Remove active class from all books
+                    bookCards.forEach(function (book) {
+                        book.classList.remove('active');
+                    });
+    
+                    // Add active class to the clicked book
+                    bookCard.classList.add('active');
+    
+                    // Load PDF for the clicked book
+                    readBook();
                 } else {
-
-                    alert('This book is not available at the moment.');
-
+                    alert('This book is not available.');
+                    // You can add other actions as needed
                 }
-
-
             });
         });
     });
+    
+
 </script>
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+
 
 
 {% endblock content %}
