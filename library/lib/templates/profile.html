@@ -188,7 +188,7 @@
     <div class="book-card">
         <h2>{{ user_profile.book1.title }}</h2>
         <p>Author: {{ user_profile.book1.author }}</p>
-        <p class="isbn">ISBN: {{ user_profile.book1.isbn_number }}</p>
+        <p class="isbn">{{ user_profile.book1.isbn_number }}</p>
         <p class="genre">Genre: {{ user_profile.book1.genre.name }}</p>
     </div>
     {% endif %}
@@ -197,7 +197,7 @@
     <div class="book-card">
         <h2>{{ user_profile.book2.title }}</h2>
         <p>Author: {{ user_profile.book2.author }}</p>
-        <p class="isbn">ISBN: {{ user_profile.book2.isbn_number }}</p>
+        <p class="isbn">{{ user_profile.book2.isbn_number }}</p>
         <p class="genre">Genre: {{ user_profile.book2.genre.name }}</p>
     </div>
     {% endif %}
@@ -229,7 +229,7 @@
 
         // Display basic book information
         const bookInfoElement = document.getElementById('book-info');
-        const activeBook = document.querySelector('.recent-book.active');
+        const activeBook = document.querySelector('.book-card.active');
         const bookTitle = activeBook.querySelector('h3').textContent.trim();
         const authorName = activeBook.querySelector('.author').textContent.trim();
         const isbnText = getCurrentISBN();
@@ -248,15 +248,15 @@
     function copyISBN() {
         const isbnText = getCurrentISBN();
 
-        // Copy ISBN to clipboard
+       
         navigator.clipboard.writeText(isbnText).then(function () {
             alert('ISBN copied to clipboard: ' + isbnText);
         });
     }
 
     function getCurrentISBN() {
-        // Retrieve and return the ISBN from the clicked book card
-        const activeBook = document.querySelector('.recent-book.active');
+        
+        const activeBook = document.querySelector('.book-card.active');
         const isbnElement = activeBook.querySelector('.isbn');
         return isbnElement.textContent.trim();
     }
@@ -267,20 +267,19 @@
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-        // Example: Load PDF when a book is clicked
         const bookCards = document.querySelectorAll('.book-card');
         bookCards.forEach(function (bookCard) {
             bookCard.addEventListener('click', function () {
                 
-                // Remove active class from all books
+                
                 bookCards.forEach(function (book) {
                     book.classList.remove('active');
                 });
 
-                // Add active class to the clicked book
+               
                 bookCard.classList.add('active');
 
-                // Load PDF for the clicked book
+                
                 readBook();
             });
         });
