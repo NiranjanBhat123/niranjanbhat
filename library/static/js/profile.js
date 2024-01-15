@@ -17,7 +17,7 @@ function loadPDF(pdfUrl) {
 
 function readBook() {
     
-    const pdfUrl = '/static/mech.pdf';
+    const pdfUrl = '/static/files/mech.pdf';
     
     loadPDF(pdfUrl);
 }
