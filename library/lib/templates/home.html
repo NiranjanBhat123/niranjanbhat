@@ -8,7 +8,7 @@
     <h2 style="margin-top: 3rem; margin-bottom: 2rem; font-family: Montserrat; color: #3498db;">New additions !</h2>
     <div class="recent-books-grid">
         {% for book in recently_added_books %}
-        <div class="book-card recent-book" data-genre="{{ book.genre.id }}">
+        <div class="book-card recent-book {% if not book.is_available %}not-available{% endif %}" data-genre="{{ book.genre.id }}">
             <h3>{{ book.title }}</h3>
             <p class="genre">{{ book.genre.name }}</p>
             <p class="isbn">{{ book.isbn_number }}</p>

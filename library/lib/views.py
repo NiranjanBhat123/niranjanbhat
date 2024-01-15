@@ -22,12 +22,13 @@ def loginn(request):
 
         try:
             user = User.objects.get(email=email)
+            user2 = Student.objects.get(email=email)
         except User.DoesNotExist:
             print("User does not exist")
             messages.error(request, "Invalid credentials. Please check your email and password.")
             return render(request, 'login.html')
 
-        user = authenticate(request, email=email, password=password)
+        user2 = authenticate(request, email=email, password=password)
 
         if user is not None:
             login(request, user)
@@ -38,6 +39,7 @@ def loginn(request):
             return render(request, 'login.html')
 
     return render(request, 'login.html')
+    
 
 
 def signup(request):
