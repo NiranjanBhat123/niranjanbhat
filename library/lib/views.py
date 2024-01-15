@@ -15,22 +15,27 @@ from django.views.decorators.csrf import csrf_exempt
 def loginn(request):
     if request.user.is_authenticated:
         return redirect('/')
+
     if request.method == "POST":
         email = request.POST.get('email')
         password = request.POST.get('password')
+
         try:
             user = User.objects.get(email=email)
-            user2 = Student.objects.get(email=email)
-            print(user, user2)
-        except Exception as e:
-            print(f"error is {e}")
-            print("user does not exist")
-        user2 = authenticate(request, email=email, password=password)
+        except User.DoesNotExist:
+            print("User does not exist")
+            messages.error(request, "Invalid credentials. Please check your email and password.")
+            return render(request, 'login.html')
+
+        user = authenticate(request, email=email, password=password)
+
         if user is not None:
             login(request, user)
             return redirect('/')
         else:
-            print("invalid credentials")
+            print("Invalid credentials")
+            messages.error(request, "Invalid credentials. Please check your email and password.")
+            return render(request, 'login.html')
 
     return render(request, 'login.html')
 
