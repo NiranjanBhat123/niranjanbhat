@@ -12,6 +12,28 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 
+
+# def loginn(request):
+#     if request.user.is_authenticated:
+#         return redirect('/')
+#     if request.method=="POST":
+#         username = request.POST.get('username').lower()
+#         password = request.POST.get('password')
+#         try:
+#             user = User.objects.get(username=username)
+#         except:
+#             messages.error(request,"user does not exist")
+#         user = authenticate(request,username=username,password=password)
+#         if user is not None:
+#             login(request,user)
+#             return redirect('/')
+#         else:
+#             messages.error(request,"invalid credentials")
+    
+
+#     return render(request, 'login.html')
+
+
 def loginn(request):
     if request.user.is_authenticated:
         return redirect('/')
@@ -20,17 +42,19 @@ def loginn(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
 
+        # Check if a user with the provided email exists
         try:
             user = User.objects.get(email=email)
-            user2 = Student.objects.get(email=email)
         except User.DoesNotExist:
             print("User does not exist")
             messages.error(request, "Invalid credentials. Please check your email and password.")
             return render(request, 'login.html')
 
-        user2 = authenticate(request, email=email, password=password)
+        # Authenticate the user using email and password
+        user = authenticate(request, username=user.username, password=password)
 
         if user is not None:
+            # Login the user
             login(request, user)
             return redirect('/')
         else:
@@ -39,6 +63,9 @@ def loginn(request):
             return render(request, 'login.html')
 
     return render(request, 'login.html')
+
+
+
     
 
 
@@ -92,14 +119,12 @@ def home(request):
     all_books = Book.objects.all()
     book_list = list(all_books)
     all_genres = Genre.objects.all()
-
     context = {
         'recently_added_books': recently_added_books,
         'all_books': all_books,
         'all_genres': all_genres,
         'book_list': book_list,
     }
-
     return render(request, 'home.html', context)
 
 
@@ -114,8 +139,6 @@ def logoutt(request):
 def borrow(request):
     if request.method == 'POST':
         isbn = request.POST.get('isbn')
-
-       
         student = Student.objects.get(email=request.user.email)
 
         # Check if the student already has 2 books
@@ -141,7 +164,6 @@ def borrow(request):
 
         student.save()
         book.save()
-
         messages.success(
             request, f'Book "{book.title}" borrowed successfully!')
         return redirect('sucess')
