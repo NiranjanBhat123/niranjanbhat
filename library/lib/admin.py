@@ -13,7 +13,8 @@ class BookAdminForm(forms.ModelForm):
         if not isbn_number:
             raise forms.ValidationError("ISBN number field is required.")
         # Regular expression pattern for ISBN format ISBN{genre}{3 digit number}
-        pattern = r'^ISBN[A-Za-z]{3}[0-9]{3}$'
+        pattern = r'^ISBN[A-Za-z]{2,5}[0-9]{3}$'
+
         if not re.match(pattern, isbn_number):
             raise forms.ValidationError("Invalid ISBN format. Please use the format ISBN{genre with 3 characters}{3 digit number}.")
         return isbn_number
