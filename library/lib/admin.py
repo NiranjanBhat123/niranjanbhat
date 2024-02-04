@@ -3,7 +3,7 @@ from .models import *
 from django.core.exceptions import ValidationError
 from django import forms
 
-class BookAdminForm(forms.ModelForm):
+class Trigger(forms.ModelForm):
     class Meta:
         model = Book
         fields = '__all__'
@@ -25,7 +25,7 @@ class StudentAdmin(admin.ModelAdmin):
 
 
 class BookAdmin(admin.ModelAdmin):
-    form = BookAdminForm
+    form = Trigger
     list_display = ('book_id', 'isbn_number', 'title', 'author',)
     search_fields = ('book_id', 'isbn_number', 'title', 'author',)
     list_filter = ('genre',)
