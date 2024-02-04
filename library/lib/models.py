@@ -1,5 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
+import re
+import logging
+from django.contrib import messages
+from django.core.exceptions import ValidationError
+
 
 
 class Student(models.Model):
@@ -34,6 +41,9 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
+    
+   
+
 
 
 class Admin(models.Model):
@@ -45,3 +55,8 @@ class Admin(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.admin_id}"
+    
+    
+
+    
+    
