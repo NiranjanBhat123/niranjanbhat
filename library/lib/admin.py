@@ -16,7 +16,7 @@ class Trigger(forms.ModelForm):
         pattern = r'^ISBN[A-Za-z]{2,5}[0-9]{3}$'
 
         if not re.match(pattern, isbn_number):
-            raise forms.ValidationError("Invalid ISBN format. Please use the format ISBN{genre with 3 characters}{3 digit number}.")
+            raise forms.ValidationError("Invalid ISBN format. Please use the format ISBN{genre with 2 to 5 characters}{3 digit number}.")
         return isbn_number
 
 class StudentAdmin(admin.ModelAdmin):
