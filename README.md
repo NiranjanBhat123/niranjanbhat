@@ -30,10 +30,12 @@ or data storage during development.
 5. Run migrations to create database tables: `python manage.py migrate`.
 6. Create a superuser account f
 
-https://github.com/NiranjanBhat123/dbms_project_library_management_system/assets/111105882/a55f93fd-d324-4a88-849d-646821b11e6b
+
 
 or accessing the admin panel: `python manage.py createsuperuser`.
 7. Start the development server: `python manage.py runserver`.
+
+https://github.com/NiranjanBhat123/dbms_project_library_management_system/assets/111105882/a55f93fd-d324-4a88-849d-646821b11e6b
 
 ## Usage
 - Access the application by visiting the URL provided by the development server.
