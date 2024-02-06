@@ -2,7 +2,7 @@
 
 ## Introduction
 The Library Management System is a web-based application developed using Django framework. It provides functionalities for managing library resources, including books, genres, and student accounts. This system allows students to borrow and return books, search for available books.
-
+https://github.com/NiranjanBhat123/dbms_project_library_management_system/assets/111105882/021981b7-5a62-42fd-b2e5-0cef38a6ca62
 ## Features
 - User authentication: Users can create accounts and log in securely.
 - Book management: Admins can add, edit, and delete books, as well as assign genres to books.
@@ -15,7 +15,11 @@ The Library Management System is a web-based application developed using Django 
 - **Django**: Python web framework used for rapid development and clean design.
 - **HTML/CSS**: Used for frontend layout and styling of web pages.
 - **JavaScript**: Used for client-side interactivity and dynamic behavior.
-- **MySQL**: Database used for data storage during development.
+- **MySQL**: Database used for CRUD operations
+
+
+
+or data storage during development.
 - **Git/GitHub**: Version control system and repository hosting platform for collaborative development.
 
 ## Installation
