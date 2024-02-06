@@ -2,7 +2,7 @@
 
 ## Introduction
 The Library Management System is a web-based application developed using Django framework. It provides functionalities for managing library resources, including books, genres, and student accounts. This system allows students to borrow and return books, search for available books.
-https://github.com/NiranjanBhat123/dbms_project_library_management_system/assets/111105882/021981b7-5a62-42fd-b2e5-0cef38a6ca62
+
 ## Features
 - User authentication: Users can create accounts and log in securely.
 - Book management: Admins can add, edit, and delete books, as well as assign genres to books.
@@ -28,7 +28,11 @@ or data storage during development.
 3. Create a virtual environment and activate it.
 4. Install the required dependencies using `pip install -r requirements.txt`.
 5. Run migrations to create database tables: `python manage.py migrate`.
-6. Create a superuser account for accessing the admin panel: `python manage.py createsuperuser`.
+6. Create a superuser account f
+
+https://github.com/NiranjanBhat123/dbms_project_library_management_system/assets/111105882/a55f93fd-d324-4a88-849d-646821b11e6b
+
+or accessing the admin panel: `python manage.py createsuperuser`.
 7. Start the development server: `python manage.py runserver`.
 
 ## Usage
