@@ -26,9 +26,8 @@ or data storage during development.
 1. Clone the repository to your local machine using `git clone`.
 2. Navigate to the project directory.
 3. Create a virtual environment and activate it.
-4. Install the required dependencies using `pip install -r requirements.txt`.
-5. Run migrations to create database tables: `python manage.py migrate`.
-6. Create a superuser account f
+4. Run migrations to create database tables: `python manage.py migrate`.
+
 
 
 
